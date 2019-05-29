@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AST-Album</string>
+    <string name="title_activity_space_photo">SpacePhotoActivity</string>
 </resources>
