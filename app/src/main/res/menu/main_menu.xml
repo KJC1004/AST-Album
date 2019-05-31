@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/bigIcon"
-        android:title="大圖示"
-        app:showAsAction="never"></item>
-    <item android:id="@+id/smallIcon"
-        android:title="小圖示"
-        app:showAsAction="never"></item>
+    <item android:id="@+id/zoomIn"
+        android:icon="@drawable/ic_zoom_in"
+        app:showAsAction="always"></item>
+    <item android:id="@+id/zoomOut"
+        android:icon="@drawable/ic_zoom_out"
+        app:showAsAction="always"></item>
 
 </menu>

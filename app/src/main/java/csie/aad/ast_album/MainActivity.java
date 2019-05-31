@@ -1,10 +1,15 @@
 package csie.aad.ast_album;
 
+import android.Manifest;
 import android.app.ActionBar;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -25,8 +30,10 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private ImageAdapter mAdapter;
 
-    private GridLayoutManager gridLayout_2 = new GridLayoutManager(this, 2);
-    private GridLayoutManager gridLayout_4 = new GridLayoutManager(this, 4);
+    private int gridSpanCnt = 4;
+    final private int minGridSpanCnt = 2;
+    final private int maxGridSpanCnt = 5;
+    private static final int CUSTOM_NUMBER = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,29 +42,56 @@ public class MainActivity extends AppCompatActivity {
 
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(gridLayout_4);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, gridSpanCnt));
 
-        //mAdapter = new ImageAdapter(this, SpacePhoto.getSpacePhotos());
+        getPermission();
+    }
+
+
+    private void getPermission(){
+        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        if(permissionCheck!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    CUSTOM_NUMBER);
+        }else{
+            setAdapter();
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == CUSTOM_NUMBER) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                setAdapter();
+            }else {
+                this.finish();
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    private void setAdapter(){
         mAdapter = new ImageAdapter(this, readPhoto());
-
         mRecyclerView.setAdapter(mAdapter);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
-
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.bigIcon:
-                mRecyclerView.setLayoutManager(gridLayout_2);
+            case R.id.zoomIn:
+                if(gridSpanCnt>minGridSpanCnt)
+                    mRecyclerView.setLayoutManager(new GridLayoutManager(this, --gridSpanCnt));
                 break;
-            case R.id.smallIcon:
-                mRecyclerView.setLayoutManager(gridLayout_4);
+            case R.id.zoomOut:
+                if(gridSpanCnt<maxGridSpanCnt)
+                    mRecyclerView.setLayoutManager(new GridLayoutManager(this, ++gridSpanCnt));
                 break;
         }
         return super.onOptionsItemSelected(item);
