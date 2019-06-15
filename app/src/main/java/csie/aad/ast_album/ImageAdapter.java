@@ -38,14 +38,12 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
                     int position = getAdapterPosition();
                     if(position != RecyclerView.NO_POSITION){
                         SpacePhoto spacePhoto = (SpacePhoto)mSpacePhotos.get(position);
-                        //Intent intent = new Intent(mContext, ....)
                         Intent intent = new Intent(mContext, SpacePhotoActivity.class);
                         intent.putExtra(SpacePhotoActivity.EXTRA_SPACE_PHOTO, spacePhoto);
                         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                                 (Activity) mContext, mImageView, ViewCompat.getTransitionName(mImageView)
                         );
-                        mContext.startActivity(intent);
-
+                        mContext.startActivity(intent, options.toBundle());
                         //Toast.makeText( view.getContext(), spacePhoto.mtitle , Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -57,7 +55,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
         mContext = context;
         mSpacePhotos = spacePhotos;
     }
-
 
     @Override
     public ImageHolder onCreateViewHolder(ViewGroup parent, int viewType) {

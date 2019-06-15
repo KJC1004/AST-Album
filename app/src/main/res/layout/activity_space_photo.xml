@@ -4,10 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     tools:context=".SpacePhotoActivity">
 
 
-    <include layout="@layout/content_space_photo" />
+    <include
+        android:id="@+id/include"
+        layout="@layout/content_space_photo" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/back_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:onClick="backToMain"
+        app:layout_anchor="@+id/include"
+        app:layout_anchorGravity="start|top"
+        app:srcCompat="@android:drawable/ic_menu_revert" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
