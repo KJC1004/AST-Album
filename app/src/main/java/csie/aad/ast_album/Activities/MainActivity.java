@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
@@ -39,12 +40,16 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int CUSTOM_NUMBER = 1;
     final private int minGridSpanCnt = 2;
-    final private int maxGridSpanCnt = 5;
+    final private int maxGridSpanCnt = 6;
     private RecyclerView mRecyclerView;
     private ImageAdapter mAdapter;
     private int gridSpanCnt = 4;
 
     private EditText mEditText;
+
+    private SharedPreferences mPreferences;
+    private String sharedPrefFile = "csie.aad.ast_album.sharedprefs";
+    static final String GRID_COUNT = "Grid Count";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
+        gridSpanCnt = mPreferences.getInt(GRID_COUNT, 4);
+
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, gridSpanCnt));
@@ -72,6 +80,13 @@ public class MainActivity extends AppCompatActivity {
         getPermission();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
+        preferencesEditor.putInt(GRID_COUNT, gridSpanCnt);
+        preferencesEditor.apply();
+    }
 
     public void onBtnSearch(View view){
         checkInternet();
