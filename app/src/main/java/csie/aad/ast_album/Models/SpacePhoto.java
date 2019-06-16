@@ -46,7 +46,6 @@ public class SpacePhoto implements Parcelable {
         return mList;
     }
 
-
     @Override
     public int describeContents() {
         return 0;

@@ -1,5 +1,6 @@
 package csie.aad.ast_album.Activities;
 
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -57,10 +58,11 @@ public class SpacePhotoActivity extends AppCompatActivity {
 
     }
 
-
-
     public void editPhoto(View view){
         Toast.makeText(this, spacePhoto.mpath, Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, StylizeActivity.class);
+        intent.putExtra(EXTRA_SPACE_PHOTO, spacePhoto);
+        startActivity(intent);
     }
 
 }

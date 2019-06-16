@@ -30,7 +30,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/image_slide"
+        app:layout_constraintBottom_toTopOf="@+id/recycler_style"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -39,25 +39,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Cancel" />
+            android:text="Cancel"
+            android:onClick="onBtnCancel" />
 
         <Button
             android:id="@+id/btn_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Save" />
+            android:text="Save"
+            android:onClick="onBtnSave" />
 
         <Button
             android:id="@+id/btn_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Share" />
+            android:text="Share"
+            android:onClick="onBtnShare" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/image_slide"
+        android:id="@+id/recycler_style"
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:layout_marginStart="8dp"
