@@ -24,42 +24,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
     private ArrayList mSpacePhotos;
     private Context mContext;
 
-    public class ImageHolder extends RecyclerView.ViewHolder{
-
-        public final ImageView mImageView;
-        final ImageAdapter mAdapter;
-
-        public ImageHolder(View itemView, ImageAdapter adapter ) {
-            super(itemView);
-            this.mImageView = itemView.findViewById(R.id.iv_photo);
-            this.mImageView.getLayoutParams().height = this.mImageView.getLayoutParams().width;
-            this.mAdapter = adapter;
-
-            itemView.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view) {
-                    int position = getAdapterPosition();
-                    if(position != RecyclerView.NO_POSITION){
-                        SpacePhoto spacePhoto = (SpacePhoto)mSpacePhotos.get(position);
-                        Intent intent = new Intent(mContext, SpacePhotoActivity.class);
-                        intent.putExtra(SpacePhotoActivity.EXTRA_SPACE_PHOTO, spacePhoto);
-                        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                                (Activity) mContext, mImageView, ViewCompat.getTransitionName(mImageView)
-                        );
-                        mContext.startActivity(intent, options.toBundle());
-
-                        //Toast.makeText( view.getContext(), spacePhoto.mtitle , Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        }
-    }
-
-    public ImageAdapter(Context context, ArrayList spacePhotos){
+    public ImageAdapter(Context context, ArrayList spacePhotos) {
         mContext = context;
         mSpacePhotos = spacePhotos;
     }
-
 
     @Override
     public ImageHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -71,7 +39,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
 
     @Override
     public void onBindViewHolder(ImageHolder holder, int position) {
-        SpacePhoto spacePhoto = (SpacePhoto)mSpacePhotos.get(position);
+        SpacePhoto spacePhoto = (SpacePhoto) mSpacePhotos.get(position);
         ImageView imageView = holder.mImageView;
 
         Glide.with(mContext)
@@ -84,5 +52,36 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
     @Override
     public int getItemCount() {
         return mSpacePhotos.size();
+    }
+
+    public class ImageHolder extends RecyclerView.ViewHolder {
+
+        public final ImageView mImageView;
+        final ImageAdapter mAdapter;
+
+        public ImageHolder(View itemView, ImageAdapter adapter) {
+            super(itemView);
+            this.mImageView = itemView.findViewById(R.id.iv_photo);
+            this.mImageView.getLayoutParams().height = this.mImageView.getLayoutParams().width;
+            this.mAdapter = adapter;
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        SpacePhoto spacePhoto = (SpacePhoto) mSpacePhotos.get(position);
+                        Intent intent = new Intent(mContext, SpacePhotoActivity.class);
+                        intent.putExtra(SpacePhotoActivity.EXTRA_SPACE_PHOTO, spacePhoto);
+                        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                (Activity) mContext, mImageView, ViewCompat.getTransitionName(mImageView)
+                        );
+                        mContext.startActivity(intent, options.toBundle());
+
+                        //Toast.makeText( view.getContext(), spacePhoto.mtitle , Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
     }
 }

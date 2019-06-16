@@ -11,15 +11,14 @@ import csie.aad.ast_album.R;
 import csie.aad.ast_album.Utils.ImageUtils;
 
 public class Stylize {
+    public static final int NUM_STYLES = 26;
     private static final String ASSET_PATH = "file:///android_asset/";
-    private static final String MODEL_FILE = ASSET_PATH + "stylize_quantized.pb";
     public static final String THUMBNAIL_PATH = ASSET_PATH + "thumbnails/";
-
-    private static boolean DEBUG = false;
+    private static final String MODEL_FILE = ASSET_PATH + "stylize_quantized.pb";
     private static final String INPUT_NODE = "input";
     private static final String STYLE_NODE = "style_num";
     private static final String OUTPUT_NODE = "transformer/expand/conv3/conv/Sigmoid";
-    public static final int NUM_STYLES = 26;
+    private static boolean DEBUG = false;
 
     public static float[] getStyleVals(int i) {
         float[] vals = new float[NUM_STYLES];

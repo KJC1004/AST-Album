@@ -24,13 +24,12 @@ import csie.aad.ast_album.Models.SpacePhoto;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView mRecyclerView;
-    private ImageAdapter mAdapter;
-
-    private int gridSpanCnt = 4;
+    private static final int CUSTOM_NUMBER = 1;
     final private int minGridSpanCnt = 2;
     final private int maxGridSpanCnt = 5;
-    private static final int CUSTOM_NUMBER = 1;
+    private RecyclerView mRecyclerView;
+    private ImageAdapter mAdapter;
+    private int gridSpanCnt = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,29 +44,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void getPermission(){
+    private void getPermission() {
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-        if(permissionCheck!= PackageManager.PERMISSION_GRANTED){
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this,
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     CUSTOM_NUMBER);
-        }else{
+        } else {
             setAdapter();
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == CUSTOM_NUMBER) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 setAdapter();
-            }else {
+            } else {
                 this.finish();
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    private void setAdapter(){
+    private void setAdapter() {
         mAdapter = new ImageAdapter(this, readPhoto());
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -81,25 +81,25 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.zoomIn:
-                if(gridSpanCnt>minGridSpanCnt)
+                if (gridSpanCnt > minGridSpanCnt)
                     mRecyclerView.setLayoutManager(new GridLayoutManager(this, --gridSpanCnt));
                 break;
             case R.id.zoomOut:
-                if(gridSpanCnt<maxGridSpanCnt)
+                if (gridSpanCnt < maxGridSpanCnt)
                     mRecyclerView.setLayoutManager(new GridLayoutManager(this, ++gridSpanCnt));
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public ArrayList readPhoto(){
+    public ArrayList readPhoto() {
 
         ArrayList mSpacePhoto = new ArrayList<>();
 
         Uri mImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        String[] projImage = { MediaStore.Images.Media._ID,
+        String[] projImage = {MediaStore.Images.Media._ID,
                 MediaStore.Images.Media.DATA,
                 MediaStore.Images.Media.SIZE,
                 MediaStore.Images.Media.DISPLAY_NAME};
@@ -109,11 +109,11 @@ public class MainActivity extends AppCompatActivity {
                 projImage,
                 MediaStore.Images.Media.MIME_TYPE + "=? or " + MediaStore.Images.Media.MIME_TYPE + "=?",
                 new String[]{"image/jpeg", "image/png"},
-                MediaStore.Images.Media.DATE_MODIFIED+" desc");
+                MediaStore.Images.Media.DATE_MODIFIED + " desc");
 
         String path, displayName;
-        if(mCursor != null){
-            while (mCursor.moveToNext()){
+        if (mCursor != null) {
+            while (mCursor.moveToNext()) {
                 path = mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.Media.DATA));
                 displayName = mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME));
                 mSpacePhoto.add(new SpacePhoto(path, displayName));

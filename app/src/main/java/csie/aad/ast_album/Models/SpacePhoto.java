@@ -7,19 +7,6 @@ import java.util.ArrayList;
 
 public class SpacePhoto implements Parcelable {
 
-    public String mpath;
-    public String mtitle;
-
-    public SpacePhoto(String path, String title){
-        mpath = path;
-        mtitle = title;
-    }
-
-    protected SpacePhoto(Parcel in){
-        mpath = in.readString();
-        mtitle = in.readString();
-    }
-
     public static final Creator<SpacePhoto> CREATOR = new Creator<SpacePhoto>() {
         @Override
         public SpacePhoto createFromParcel(Parcel source) {
@@ -31,7 +18,18 @@ public class SpacePhoto implements Parcelable {
             return new SpacePhoto[size];
         }
     };
+    public String mpath;
+    public String mtitle;
 
+    public SpacePhoto(String path, String title) {
+        mpath = path;
+        mtitle = title;
+    }
+
+    protected SpacePhoto(Parcel in) {
+        mpath = in.readString();
+        mtitle = in.readString();
+    }
 
     public static ArrayList getSpacePhotos() {
 

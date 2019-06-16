@@ -63,8 +63,8 @@ public class StyleAdapter extends RecyclerView.Adapter<StyleAdapter.StyleHolder>
 
     public class StyleHolder extends RecyclerView.ViewHolder {
 
-        private ImageView mImageView;
         final StyleAdapter mAdapter;
+        private ImageView mImageView;
 
         public StyleHolder(View itemView, StyleAdapter adapter) {
             super(itemView);

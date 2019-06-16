@@ -28,6 +28,17 @@ public class StylizeActivity extends AppCompatActivity {
 
     private SpacePhoto spacePhoto;
 
+    public static ArrayList getThumbnails() {
+        ArrayList<SpacePhoto> mList = new ArrayList();
+        for (int i = 0; i < NUM_STYLES; ++i) {
+            mList.add(
+                    new SpacePhoto(
+                            THUMBNAIL_PATH + "style" + i + ".jpg",
+                            ""));
+        }
+        return mList;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,17 +68,6 @@ public class StylizeActivity extends AppCompatActivity {
         );
         mAdapter = new StyleAdapter(this, getThumbnails());
         mRecyclerView.setAdapter(mAdapter);
-    }
-
-    public static ArrayList getThumbnails() {
-        ArrayList<SpacePhoto> mList = new ArrayList();
-        for (int i = 0; i < NUM_STYLES; ++i) {
-            mList.add(
-                    new SpacePhoto(
-                            THUMBNAIL_PATH + "style" + i + ".jpg",
-                            ""));
-        }
-        return mList;
     }
 
     public void onBtnCancel(View view) {

@@ -18,14 +18,12 @@ import csie.aad.ast_album.Models.SpacePhoto;
 
 public class SpacePhotoActivity extends AppCompatActivity {
 
-    public static  final String EXTRA_SPACE_PHOTO = "SpacePhotoActivity.SPACE_PHOTO";
+    public static final String EXTRA_SPACE_PHOTO = "SpacePhotoActivity.SPACE_PHOTO";
+    Animation barHide, barShow, editHide, editShow, test;
+    Boolean showFlag = true;
     private ImageView mImageView;
     private SpacePhoto spacePhoto;
     private FloatingActionButton fab, back_fab;
-
-    Animation barHide, barShow, editHide, editShow, test;
-    Boolean showFlag = true;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +54,13 @@ public class SpacePhotoActivity extends AppCompatActivity {
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(showFlag){
+                if (showFlag) {
                     back_fab.startAnimation(barHide);
                     back_fab.setClickable(false);
                     fab.startAnimation(editHide);
                     fab.setClickable(false);
                     showFlag = false;
-                }else{
+                } else {
                     back_fab.startAnimation(barShow);
                     back_fab.setClickable(true);
                     fab.startAnimation(editShow);
@@ -74,12 +72,12 @@ public class SpacePhotoActivity extends AppCompatActivity {
 
     }
 
-    public void backToMain(View view){
+    public void backToMain(View view) {
         finish();
         //overridePendingTransition(R.anim.showbar, R.anim.hidebar);
     }
 
-    public void editPhoto(View view){
+    public void editPhoto(View view) {
         Toast.makeText(this, spacePhoto.mpath, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, StylizeActivity.class);
         intent.putExtra(EXTRA_SPACE_PHOTO, spacePhoto);
