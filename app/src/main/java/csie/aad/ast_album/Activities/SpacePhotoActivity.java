@@ -89,11 +89,10 @@ public class SpacePhotoActivity extends AppCompatActivity {
 
     public void backToMain(View view) {
         finish();
-        //overridePendingTransition(R.anim.showbar, R.anim.hidebar);
     }
 
     public void editPhoto(View view) {
-        Toast.makeText(this, spacePhoto.mpath, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, spacePhoto.mpath, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, StylizeActivity.class);
         intent.putExtra(EXTRA_SPACE_PHOTO, spacePhoto);
         startActivity(intent);

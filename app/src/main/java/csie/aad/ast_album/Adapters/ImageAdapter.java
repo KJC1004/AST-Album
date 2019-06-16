@@ -73,10 +73,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
                         SpacePhoto spacePhoto = (SpacePhoto) mSpacePhotos.get(position);
                         Intent intent = new Intent(mContext, SpacePhotoActivity.class);
                         intent.putExtra(SpacePhotoActivity.EXTRA_SPACE_PHOTO, spacePhoto);
-                        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                                (Activity) mContext, mImageView, ViewCompat.getTransitionName(mImageView)
-                        );
-                        mContext.startActivity(intent, options.toBundle());
+                        mContext.startActivity(intent);
 
                         //Toast.makeText( view.getContext(), spacePhoto.mtitle , Toast.LENGTH_SHORT).show();
                     }
