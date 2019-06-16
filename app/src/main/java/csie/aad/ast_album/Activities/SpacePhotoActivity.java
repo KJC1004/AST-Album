@@ -1,6 +1,7 @@
 package csie.aad.ast_album.Activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import csie.aad.ast_album.R;
 import csie.aad.ast_album.Models.SpacePhoto;
@@ -41,7 +44,19 @@ public class SpacePhotoActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(spacePhoto.mpath)
                 .asBitmap()
-                .error(R.drawable.ic_error)
+                .listener(new RequestListener<String, Bitmap>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<Bitmap> target, boolean isFirstResource) {
+                        Toast.makeText(SpacePhotoActivity.this , "Can't find the photo", Toast.LENGTH_SHORT).show();
+                        finish();
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Bitmap resource, String model, Target<Bitmap> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        return false;
+                    }
+                })
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(mImageView);
 

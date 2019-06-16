@@ -1,20 +1,33 @@
 package csie.aad.ast_album.Activities;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -31,10 +44,26 @@ public class MainActivity extends AppCompatActivity {
     private ImageAdapter mAdapter;
     private int gridSpanCnt = 4;
 
+    private EditText mEditText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mEditText = findViewById(R.id.urlEditText);
+        //mEditText.setText("http://i.imgur.com/zuG2bGQ.jpg");
+        mEditText.setImeOptions(EditorInfo.IME_ACTION_SEND);
+        mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener(){
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    closeKeyboard();
+                    checkInternet();
+                }
+                return false;
+            }
+        });
 
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);
@@ -43,6 +72,47 @@ public class MainActivity extends AppCompatActivity {
         getPermission();
     }
 
+
+    public void onBtnSearch(View view){
+        checkInternet();
+    }
+
+    public void checkInternet(){
+        // Check the status of the network connection.
+        ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = null;
+        if(connMgr != null){
+            networkInfo = connMgr.getActiveNetworkInfo();
+        }
+
+        String url = mEditText.getText().toString();
+        mEditText.setText("");
+
+        // If the network is available, connected, and the search field is not empty, start a BookLoader AsyncTask.
+        if(networkInfo != null && networkInfo.isConnected() && !url.isEmpty() ){
+            searchPhoto(url);
+        }else{
+            if( url.isEmpty() ){
+                Toast.makeText(this, "Please input website", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, "NO Internet", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public void searchPhoto(String url){
+        SpacePhoto spacePhoto = new SpacePhoto(url, "search photo");
+        Intent intent = new Intent(this, SpacePhotoActivity.class);
+        intent.putExtra(SpacePhotoActivity.EXTRA_SPACE_PHOTO, spacePhoto);
+        startActivity(intent);
+    }
+
+    public void closeKeyboard(){
+        InputMethodManager inputManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        if(inputManager != null){
+            inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
 
     private void getPermission() {
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
