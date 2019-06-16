@@ -5,6 +5,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -19,19 +21,23 @@ public class SpacePhotoActivity extends AppCompatActivity {
     public static  final String EXTRA_SPACE_PHOTO = "SpacePhotoActivity.SPACE_PHOTO";
     private ImageView mImageView;
     private SpacePhoto spacePhoto;
-    private FloatingActionButton fab;
+    private FloatingActionButton fab, back_fab;
 
-    private boolean showFlag = true;
+    Animation barHide, barShow, editHide, editShow, test;
+    Boolean showFlag = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_space_photo);
 
-        setTitle("");
+        getSupportActionBar().hide();
 
-        mImageView = (ImageView) findViewById(R.id.image);
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        setTitle("");
+        fab = findViewById(R.id.fab);
+        back_fab = findViewById(R.id.back_fab);
+        mImageView = findViewById(R.id.image);
         spacePhoto = getIntent().getParcelableExtra(EXTRA_SPACE_PHOTO);
 
         Glide.with(this)
@@ -41,21 +47,36 @@ public class SpacePhotoActivity extends AppCompatActivity {
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(mImageView);
 
+        test = AnimationUtils.loadAnimation(this, R.anim.anim);
+        barHide = AnimationUtils.loadAnimation(this, R.anim.hidebar);
+        barShow = AnimationUtils.loadAnimation(this, R.anim.showbar);
+        editHide = AnimationUtils.loadAnimation(this, R.anim.hideedit);
+        editShow = AnimationUtils.loadAnimation(this, R.anim.showedit);
+
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(showFlag){
-                    getSupportActionBar().hide();
-                    fab.hide();
+                    back_fab.startAnimation(barHide);
+                    back_fab.setClickable(false);
+                    fab.startAnimation(editHide);
+                    fab.setClickable(false);
                     showFlag = false;
                 }else{
-                    getSupportActionBar().show();
-                    fab.show();
+                    back_fab.startAnimation(barShow);
+                    back_fab.setClickable(true);
+                    fab.startAnimation(editShow);
+                    fab.setClickable(true);
                     showFlag = true;
                 }
             }
         });
 
+    }
+
+    public void backToMain(View view){
+        finish();
+        //overridePendingTransition(R.anim.showbar, R.anim.hidebar);
     }
 
     public void editPhoto(View view){
