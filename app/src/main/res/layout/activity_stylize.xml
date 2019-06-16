@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000000"
+    android:splitMotionEvents="false"
     tools:context=".Activities.StylizeActivity">
 
     <ImageView
@@ -11,10 +13,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_search"
@@ -39,24 +39,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Cancel"
-            android:onClick="onBtnCancel" />
+            android:onClick="onBtnCancel"
+            android:text="Cancel" />
 
         <Button
             android:id="@+id/btn_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Save"
-            android:onClick="onBtnSave" />
+            android:onClick="onBtnSave"
+            android:text="Save" />
 
         <Button
             android:id="@+id/btn_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Share"
-            android:onClick="onBtnShare" />
+            android:onClick="onBtnShare"
+            android:text="Share" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
@@ -64,10 +64,9 @@
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
+        android:padding="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

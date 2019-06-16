@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">AST-Album</string>
     <string name="title_activity_space_photo">SpacePhotoActivity</string>
+
+    <string name="cache_dir">images/</string>
+    <string name="cache_file">0.png</string>
 </resources>

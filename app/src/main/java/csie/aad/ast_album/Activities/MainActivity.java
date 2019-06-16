@@ -43,6 +43,12 @@ public class MainActivity extends AppCompatActivity {
         getPermission();
     }
 
+    @Override
+    protected void onStart(){
+        super.onStart();
+        setAdapter();
+    }
+
 
     private void getPermission() {
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -71,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new ImageAdapter(this, readPhoto());
         mRecyclerView.setAdapter(mAdapter);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
