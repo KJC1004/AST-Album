@@ -2,11 +2,16 @@ package csie.aad.ast_album.Utils;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+
+import csie.aad.ast_album.Models.SpacePhoto;
+
+import static csie.aad.ast_album.Models.Stylize.NUM_STYLES;
+import static csie.aad.ast_album.Models.Stylize.THUMBNAIL_PATH;
 
 public class ImageUtils {
 
@@ -37,5 +42,16 @@ public class ImageUtils {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         byte[] byteArray = stream.toByteArray();
         return byteArray;
+    }
+
+    public static ArrayList getThumbnails() {
+        ArrayList<SpacePhoto> mList = new ArrayList();
+        for (int i = 0; i < NUM_STYLES; ++i) {
+            mList.add(
+                    new SpacePhoto(
+                            THUMBNAIL_PATH + "style" + i + ".jpg",
+                            ""));
+        }
+        return mList;
     }
 }

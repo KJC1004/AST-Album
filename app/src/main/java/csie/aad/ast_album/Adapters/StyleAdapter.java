@@ -2,7 +2,6 @@ package csie.aad.ast_album.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -19,7 +17,6 @@ import java.util.ArrayList;
 import csie.aad.ast_album.Models.SpacePhoto;
 import csie.aad.ast_album.Models.Stylize;
 import csie.aad.ast_album.R;
-import csie.aad.ast_album.Utils.ImageUtils;
 
 public class StyleAdapter extends RecyclerView.Adapter<StyleAdapter.StyleHolder> {
 
@@ -30,7 +27,9 @@ public class StyleAdapter extends RecyclerView.Adapter<StyleAdapter.StyleHolder>
     public StyleAdapter(Context context, ArrayList photos) {
         mContext = context;
         mPhotos = photos;
-        mViewport = ((Activity) context).findViewById(R.id.viewport);
+
+        Activity activity = (Activity) context;
+        mViewport = activity.findViewById(R.id.viewport);
     }
 
     @NonNull
@@ -44,7 +43,6 @@ public class StyleAdapter extends RecyclerView.Adapter<StyleAdapter.StyleHolder>
 
     @Override
     public void onBindViewHolder(@NonNull StyleHolder holder, int i) {
-
         SpacePhoto spacePhoto = mPhotos.get(i);
         ImageView imageView = holder.mImageView;
 
@@ -61,6 +59,10 @@ public class StyleAdapter extends RecyclerView.Adapter<StyleAdapter.StyleHolder>
         return mPhotos.size();
     }
 
+    public boolean isReady() {
+        return mViewport.getAlpha() == 1.0f;
+    }
+
     public class StyleHolder extends RecyclerView.ViewHolder {
 
         final StyleAdapter mAdapter;
@@ -75,18 +77,8 @@ public class StyleAdapter extends RecyclerView.Adapter<StyleAdapter.StyleHolder>
             mImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int position = getAdapterPosition();
-                    Toast.makeText(mContext,
-                            "Clicked " + position,
-                            Toast.LENGTH_SHORT).show();
-
-                    // TODO: Send Style values to AsyncTask
-                    Bitmap result = Stylize.stylizeImage(mContext, position);
-
-                    Glide.with(mContext)
-                            .load(ImageUtils.bitmapToByte(result))
-                            .fitCenter()
-                            .into(mViewport);
+                    if (!isReady()) return;
+                    new Stylize(mContext, getAdapterPosition()).execute();
                 }
             });
         }

@@ -3,14 +3,21 @@ package csie.aad.ast_album.Models;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
+import android.widget.Button;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
+
+import java.lang.ref.WeakReference;
 
 import csie.aad.ast_album.R;
 import csie.aad.ast_album.Utils.ImageUtils;
 
-public class Stylize {
+public class Stylize extends AsyncTask<Void, Void, Bitmap> {
     public static final int NUM_STYLES = 26;
     private static final String ASSET_PATH = "file:///android_asset/";
     public static final String THUMBNAIL_PATH = ASSET_PATH + "thumbnails/";
@@ -19,6 +26,34 @@ public class Stylize {
     private static final String STYLE_NODE = "style_num";
     private static final String OUTPUT_NODE = "transformer/expand/conv3/conv/Sigmoid";
     private static boolean DEBUG = false;
+    private static TensorFlowInferenceInterface inferenceInterface;
+
+    private WeakReference<Context> mWeakContext;
+    private WeakReference<ImageView> mViewport;
+    private WeakReference<Button> mButtonSave;
+    private int mPos;
+
+    public Stylize(Context context, int pos) {
+        Activity activity = (Activity) context;
+        ImageView viewport = activity.findViewById(R.id.viewport);
+        Button buttonSave = activity.findViewById(R.id.btn_save);
+
+        mWeakContext = new WeakReference(context);
+        mViewport = new WeakReference(viewport);
+        mButtonSave = new WeakReference(buttonSave);
+        mPos = pos;
+    }
+
+    public static void init(Context context) {
+        inferenceInterface =
+                new TensorFlowInferenceInterface(
+                        context.getAssets(),
+                        MODEL_FILE);
+    }
+
+    public static void clean() {
+        inferenceInterface.close();
+    }
 
     public static float[] getStyleVals(int i) {
         float[] vals = new float[NUM_STYLES];
@@ -37,7 +72,7 @@ public class Stylize {
                 512,
                 false);
 
-        stylize(context, scaled, pos);
+        stylize(scaled, pos);
 
         Bitmap result = Bitmap.createScaledBitmap(
                 scaled,
@@ -48,7 +83,7 @@ public class Stylize {
         return result;
     }
 
-    public static void stylize(Context context, final Bitmap bitmap, int pos) {
+    public static void stylize(final Bitmap bitmap, int pos) {
         int w = bitmap.getWidth();
         int h = bitmap.getHeight();
 
@@ -64,11 +99,6 @@ public class Stylize {
             floatValues[i * 3 + 1] = ((val >> 8) & 0xFF) / 255.0f;
             floatValues[i * 3 + 2] = (val & 0xFF) / 255.0f;
         }
-
-        TensorFlowInferenceInterface inferenceInterface =
-                new TensorFlowInferenceInterface(
-                        context.getAssets(),
-                        MODEL_FILE);
 
         // Copy the input data into TensorFlow.
         inferenceInterface.feed(INPUT_NODE, floatValues, 1, w, h, 3);
@@ -87,5 +117,44 @@ public class Stylize {
         }
 
         bitmap.setPixels(intValues, 0, w, 0, 0, w, h);
+    }
+
+    @Override
+    protected void onPreExecute() {
+        mViewport.get().setAlpha(0.5f);
+    }
+
+    @Override
+    protected Bitmap doInBackground(Void... voids) {
+        Context context = mWeakContext.get();
+
+        Bitmap result = null;
+        try {
+            result = Stylize.stylizeImage(context, mPos);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    protected void onPostExecute(Bitmap result) {
+
+        Context context = mWeakContext.get();
+        ImageView viewport = mViewport.get();
+
+        viewport.setAlpha(1.0f);
+
+        if (result == null) {
+            return;
+        }
+
+        Glide.with(context)
+                .load(ImageUtils.bitmapToByte(result))
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .fitCenter()
+                .into(viewport);
+
+        mButtonSave.get().setEnabled(true);
     }
 }

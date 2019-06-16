@@ -15,9 +15,9 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
-import csie.aad.ast_album.R;
-import csie.aad.ast_album.Models.SpacePhoto;
 import csie.aad.ast_album.Activities.SpacePhotoActivity;
+import csie.aad.ast_album.Models.SpacePhoto;
+import csie.aad.ast_album.R;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder> {
 

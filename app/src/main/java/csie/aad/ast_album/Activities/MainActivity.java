@@ -1,7 +1,6 @@
 package csie.aad.ast_album.Activities;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,14 +9,12 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -33,23 +30,21 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import csie.aad.ast_album.Adapters.ImageAdapter;
-import csie.aad.ast_album.R;
 import csie.aad.ast_album.Models.SpacePhoto;
+import csie.aad.ast_album.R;
 
 public class MainActivity extends AppCompatActivity {
 
+    static final String GRID_COUNT = "Grid Count";
     private static final int CUSTOM_NUMBER = 1;
     final private int minGridSpanCnt = 2;
     final private int maxGridSpanCnt = 6;
     private RecyclerView mRecyclerView;
     private ImageAdapter mAdapter;
     private int gridSpanCnt = 4;
-
     private EditText mEditText;
-
     private SharedPreferences mPreferences;
     private String sharedPrefFile = "csie.aad.ast_album.sharedprefs";
-    static final String GRID_COUNT = "Grid Count";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         mEditText = findViewById(R.id.urlEditText);
         //mEditText.setText("http://i.imgur.com/zuG2bGQ.jpg");
         mEditText.setImeOptions(EditorInfo.IME_ACTION_SEND);
-        mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener(){
+        mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEND) {
@@ -81,6 +76,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        setAdapter();
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         SharedPreferences.Editor preferencesEditor = mPreferences.edit();
@@ -88,15 +89,15 @@ public class MainActivity extends AppCompatActivity {
         preferencesEditor.apply();
     }
 
-    public void onBtnSearch(View view){
+    public void onBtnSearch(View view) {
         checkInternet();
     }
 
-    public void checkInternet(){
+    public void checkInternet() {
         // Check the status of the network connection.
-        ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = null;
-        if(connMgr != null){
+        if (connMgr != null) {
             networkInfo = connMgr.getActiveNetworkInfo();
         }
 
@@ -104,27 +105,27 @@ public class MainActivity extends AppCompatActivity {
         mEditText.setText("");
 
         // If the network is available, connected, and the search field is not empty, start a BookLoader AsyncTask.
-        if(networkInfo != null && networkInfo.isConnected() && !url.isEmpty() ){
+        if (networkInfo != null && networkInfo.isConnected() && !url.isEmpty()) {
             searchPhoto(url);
-        }else{
-            if( url.isEmpty() ){
+        } else {
+            if (url.isEmpty()) {
                 Toast.makeText(this, "Please input website", Toast.LENGTH_SHORT).show();
-            }else{
+            } else {
                 Toast.makeText(this, "NO Internet", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    public void searchPhoto(String url){
+    public void searchPhoto(String url) {
         SpacePhoto spacePhoto = new SpacePhoto(url, "search photo");
         Intent intent = new Intent(this, SpacePhotoActivity.class);
         intent.putExtra(SpacePhotoActivity.EXTRA_SPACE_PHOTO, spacePhoto);
         startActivity(intent);
     }
 
-    public void closeKeyboard(){
-        InputMethodManager inputManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        if(inputManager != null){
+    public void closeKeyboard() {
+        InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (inputManager != null) {
             inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
@@ -156,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new ImageAdapter(this, readPhoto());
         mRecyclerView.setAdapter(mAdapter);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

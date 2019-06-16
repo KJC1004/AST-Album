@@ -2,9 +2,9 @@ package csie.aad.ast_album.Activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -16,8 +16,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
-import csie.aad.ast_album.R;
 import csie.aad.ast_album.Models.SpacePhoto;
+import csie.aad.ast_album.R;
 
 public class SpacePhotoActivity extends AppCompatActivity {
 
@@ -47,7 +47,7 @@ public class SpacePhotoActivity extends AppCompatActivity {
                 .listener(new RequestListener<String, Bitmap>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<Bitmap> target, boolean isFirstResource) {
-                        Toast.makeText(SpacePhotoActivity.this , "Can't find the photo", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SpacePhotoActivity.this, "Can't find the photo", Toast.LENGTH_SHORT).show();
                         finish();
                         return false;
                     }
