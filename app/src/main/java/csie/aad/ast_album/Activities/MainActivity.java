@@ -72,13 +72,13 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, gridSpanCnt));
 
-        getPermission();
+        //getPermission();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        setAdapter();
+        getPermission();
     }
 
     @Override
