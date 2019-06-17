@@ -1,7 +1,6 @@
 package csie.aad.ast_album.Activities;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,33 +20,24 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
-import java.util.ArrayList;
-
 import csie.aad.ast_album.Adapters.StyleAdapter;
 import csie.aad.ast_album.Models.SpacePhoto;
 import csie.aad.ast_album.Models.Stylize;
 import csie.aad.ast_album.R;
 import csie.aad.ast_album.Utils.ImageUtils;
 
-import static csie.aad.ast_album.Models.Stylize.NUM_STYLES;
-import static csie.aad.ast_album.Models.Stylize.THUMBNAIL_PATH;
-
 public class StylizeActivity extends AppCompatActivity {
 
     public static final String EXTRA_PHOTO = "StylizeActivity.SPACE_PHOTO";
     private static final int REQUEST_SHARE = 0;
-
+    Animation barHide, barShow, editHide, editShow;
     private ImageView viewport;
     private StyleAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private LinearLayout mLowerLayout;
     private FloatingActionButton fabBack, fabEdit;
-
     private SpacePhoto spacePhoto;
     private Uri sharedFileUri;
-
-    Animation barHide, barShow, editHide, editShow;
-
     private boolean edit_on, imgShow_on;
 
     @Override
@@ -180,17 +170,17 @@ public class StylizeActivity extends AppCompatActivity {
     }
 
     public void onClickViewport(View view) {
-        if(imgShow_on){
-            if(edit_on){
+        if (imgShow_on) {
+            if (edit_on) {
                 styleEditShow(300);
-            }else{
+            } else {
                 fabEditShow();
             }
             fabBackShow();
-        }else{
-            if(edit_on){
+        } else {
+            if (edit_on) {
                 styleEditHide(300);
-            }else{
+            } else {
                 fabEditHide();
             }
             fabBackHide();
@@ -198,7 +188,7 @@ public class StylizeActivity extends AppCompatActivity {
         imgShow_on = !imgShow_on;
     }
 
-    public void styleEditShow(int duration){
+    public void styleEditShow(int duration) {
         int h = mLowerLayout.getMeasuredHeight();
         mLowerLayout.animate()
                 .translationYBy(-h)
@@ -206,7 +196,8 @@ public class StylizeActivity extends AppCompatActivity {
                 .setDuration(duration);
         mLowerLayout.setClickable(true);
     }
-    public void styleEditHide(int duration){
+
+    public void styleEditHide(int duration) {
         int h = mLowerLayout.getMeasuredHeight();
         mLowerLayout.animate()
                 .translationYBy(h)
@@ -215,20 +206,22 @@ public class StylizeActivity extends AppCompatActivity {
         mLowerLayout.setClickable(false);
     }
 
-    public void fabEditShow(){
+    public void fabEditShow() {
         fabEdit.startAnimation(editShow);
         fabEdit.setClickable(true);
     }
-    public void fabEditHide(){
+
+    public void fabEditHide() {
         fabEdit.startAnimation(editHide);
         fabEdit.setClickable(false);
     }
 
-    public void fabBackShow(){
+    public void fabBackShow() {
         fabBack.startAnimation(barShow);
         fabBack.setClickable(true);
     }
-    public void fabBackHide(){
+
+    public void fabBackHide() {
         fabBack.startAnimation(barHide);
         fabBack.setClickable(false);
     }

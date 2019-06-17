@@ -2,10 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/zoomIn"
+    <item
+        android:id="@+id/zoomIn"
         android:icon="@drawable/ic_zoom_in"
         app:showAsAction="always"></item>
-    <item android:id="@+id/zoomOut"
+    <item
+        android:id="@+id/zoomOut"
         android:icon="@drawable/ic_zoom_out"
         app:showAsAction="always"></item>
 

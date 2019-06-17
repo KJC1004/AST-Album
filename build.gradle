@@ -1,4 +1,9 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+ext {
+    STORE_FILE = 'C:\\Users\\KJCHEN\\AndroidStudioProjects\\KEY_STORE\\AST-Album.jks'
+    STORE_PASSWORD = 'astalbum'
+    KEY_ALIAS = 'first_key_ever'
+    KEY_PASSWORD = 'astalbum'
+}// Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
     repositories {
