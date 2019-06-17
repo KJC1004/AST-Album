@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
-import csie.aad.ast_album.Activities.SpacePhotoActivity;
+import csie.aad.ast_album.Activities.StylizeActivity;
 import csie.aad.ast_album.Models.SpacePhoto;
 import csie.aad.ast_album.R;
 
@@ -71,8 +71,8 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageHolder>
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         SpacePhoto spacePhoto = (SpacePhoto) mSpacePhotos.get(position);
-                        Intent intent = new Intent(mContext, SpacePhotoActivity.class);
-                        intent.putExtra(SpacePhotoActivity.EXTRA_SPACE_PHOTO, spacePhoto);
+                        Intent intent = new Intent(mContext, StylizeActivity.class);
+                        intent.putExtra(StylizeActivity.EXTRA_PHOTO, spacePhoto);
                         mContext.startActivity(intent);
 
                         //Toast.makeText( view.getContext(), spacePhoto.mtitle , Toast.LENGTH_SHORT).show();

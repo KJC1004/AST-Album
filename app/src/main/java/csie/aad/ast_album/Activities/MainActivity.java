@@ -71,8 +71,6 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, gridSpanCnt));
-
-        //getPermission();
     }
 
     @Override
@@ -118,8 +116,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void searchPhoto(String url) {
         SpacePhoto spacePhoto = new SpacePhoto(url, "search photo");
-        Intent intent = new Intent(this, SpacePhotoActivity.class);
-        intent.putExtra(SpacePhotoActivity.EXTRA_SPACE_PHOTO, spacePhoto);
+        Intent intent = new Intent(this, StylizeActivity.class);
+        intent.putExtra(StylizeActivity.EXTRA_PHOTO, spacePhoto);
         startActivity(intent);
     }
 

@@ -16,13 +16,6 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".Activities.StylizeActivity"></activity>
-        <activity
-            android:name=".Activities.SpacePhotoActivity"
-            android:label="@string/title_activity_space_photo">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Activities.MainActivity" />
-        </activity>
         <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
